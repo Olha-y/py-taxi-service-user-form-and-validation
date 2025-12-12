@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import (
     render,
@@ -18,6 +19,9 @@ from .models import (
     Car,
     Manufacturer,
 )
+
+
+User = get_user_model()
 
 
 @login_required
@@ -109,19 +113,19 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
-    model = Driver
+    model = User
     paginate_by = 5
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
-    model = Driver
+    model = User
     form_class = DriverCreateForm
     success_url = reverse_lazy("taxi:driver-list")
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    model = User
+    queryset = User.objects.all().prefetch_related("cars__manufacturer")
 
 
 class DriverAssignToCarView(LoginRequiredMixin, View):
@@ -139,7 +143,7 @@ class DriverRemoveFromCarView(LoginRequiredMixin, View):
 
 
 class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Driver
+    model = User
     form_class = DriverLicenseUpdateForm
     template_name = "taxi/driver_update.html"
 
@@ -151,6 +155,6 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
-    model = Driver
+    model = User
     fields = "__all__"
     success_url = reverse_lazy("taxi:driver-list")
