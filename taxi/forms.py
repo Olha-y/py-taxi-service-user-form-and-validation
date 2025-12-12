@@ -1,15 +1,18 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.forms.widgets import CheckboxSelectMultiple
 
-from .models import Driver, Car
+from .models import Car
 from django.forms import ModelForm, ModelMultipleChoiceField
 import re
 
 
+User = get_user_model()
+
 class DriverLicenseUpdateForm(ModelForm):
     class Meta:
-        model = Driver
+        model = User
         fields = ("license_number",)
 
     def clean_license_number(self):
@@ -23,10 +26,10 @@ class DriverLicenseUpdateForm(ModelForm):
         return license_number
 
 
-class DriverCreateForm(DriverLicenseUpdateForm):
+class DriverCreateForm(UserCreationForm, DriverLicenseUpdateForm):
     class Meta:
-        model = Driver
-        fields = "__all__"
+        model = User
+        fields = ("username", "license_number", "email", "first_name", "last_name", "password1", "password2",)
 
 
 class CarForm(ModelForm):
