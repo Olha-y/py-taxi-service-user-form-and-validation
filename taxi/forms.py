@@ -10,6 +10,7 @@ import re
 
 User = get_user_model()
 
+
 class DriverLicenseUpdateForm(ModelForm):
     class Meta:
         model = User
@@ -29,7 +30,15 @@ class DriverLicenseUpdateForm(ModelForm):
 class DriverCreateForm(UserCreationForm, DriverLicenseUpdateForm):
     class Meta:
         model = User
-        fields = ("username", "license_number", "email", "first_name", "last_name", "password1", "password2",)
+        fields = (
+            "username",
+            "license_number",
+            "email",
+            "first_name",
+            "last_name",
+            "password1",
+            "password2",
+        )
 
 
 class CarForm(ModelForm):
